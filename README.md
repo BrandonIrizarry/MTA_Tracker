@@ -57,4 +57,8 @@ arrivals is [realtimerail.nyc](realtimerail.nyc "realtimerail.nyc
 URL"). The quality and care put into this app is worthy of envy. I
 rely on it for determining whether I'll make a certain train on time.
 
+# License
 
+This software is licensed under the GNU Affero General Public License;
+see the [LICENSE](LICENSE "The LICENSE file") file included in this
+repo.
