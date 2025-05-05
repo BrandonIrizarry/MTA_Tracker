@@ -1,0 +1,11 @@
+# -*- mode: restclient -*-
+
+# vehicles
+
+GET https://bustime.mta.info/api/siri/vehicle-monitoring.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&version=2&LineRef=M11&VehicleMonitoringDetailLevel=normal&DirectionRef=1
+
+# stops
+
+GET https://bustime.mta.info/api/siri/stop-monitoring.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&version=2&VehicleMonitoringDetailLevel=normal&MonitoringRef=401386
+
+
