@@ -28,14 +28,14 @@ on whichever one gets them to work on time.  She opens the app, and
 examines some bus and train stations she has bookmarked (fake names
 here are used merely for the sake of illustration):
 
-XYZ Street W Avenue
-	Uptown 1: 8:30 AM
-	Uptown 2: 8:45 AM
-	
-Nth Street Hill Drive
-	Northbound Q31: 8:15 AM
-	Northbound Q32: 8:30 AM
-	
+XYZ Street W Avenue<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Uptown 1: 8:30 AM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Uptown 2: 8:45 AM
+
+Nth Street Hill Drive<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Northbound Q31: 8:15 AM<br>
+&nbsp;&nbsp;&nbsp;&nbsp;Northbound Q32: 8:30 AM
+
 The first entry's header would be in red, signifying a train stop, and
 the second entry's header would be in blue, signifying a bus stop.
 
