@@ -39,31 +39,41 @@ func main() {
 
 	stopMonitoringURL.RawQuery = queryValues.Encode()
 
-	// Make the request, and print it out.
+	jsonDump, err := callURL(*stopMonitoringURL)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fmt.Println(jsonDump)
+}
+
+func callURL(url url.URL) (string, error) {
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 	}
 
-	req, err := http.NewRequest("GET", stopMonitoringURL.String(), nil)
+	req, err := http.NewRequest("GET", url.String(), nil)
 
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
 	res, err := client.Do(req)
 
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
+
 	defer res.Body.Close()
 
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		log.Fatal(err)
+		return "", err
 	}
 
-	fmt.Println(string(body))
+	return string(body), nil
 }
 
 func initStopMonitoringURL(apiKey string) (*url.URL, error) {
