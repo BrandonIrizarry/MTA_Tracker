@@ -53,7 +53,7 @@ of the website.
 
 ## realtimerail.nyc
 An especially remarkable (and hassle free!) tool for tracking train
-arrivals is [realtimerail.nyc](realtimerail.nyc "realtimerail.nyc
+arrivals is [realtimerail.nyc](https://realtimerail.nyc "realtimerail.nyc
 URL"). The quality and care put into this app is worthy of envy. I
 rely on it for determining whether I'll make a certain train on time.
 
