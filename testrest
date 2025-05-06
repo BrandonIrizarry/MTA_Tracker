@@ -8,4 +8,11 @@ GET https://bustime.mta.info/api/siri/vehicle-monitoring.json?key=914cb520-4cb4-
 
 GET https://bustime.mta.info/api/siri/stop-monitoring.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&version=2&VehicleMonitoringDetailLevel=normal&MonitoringRef=401386
 
+# OBA API - Use this API to translate named stops (say, presented to
+# the user via some list) to a stop ID, which the stop-monitoring API
+# will then use. May be a good idea for app to precompile this
+# information for a given user, once they've selected a stop to
+# track. If the user deletes the stop, then after a certain amount of
+# time, this saved info could get pruned from the database.
 
+GET https://bustime.mta.info/api/where/stops-for-route/MTA%20NYCT_M11.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&includePolylines=false&version=2
