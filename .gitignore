@@ -2,3 +2,4 @@
 *.org
 /.env
 /MTA_Tracker
+/stopmonitortest
