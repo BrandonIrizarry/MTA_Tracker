@@ -1,14 +1,19 @@
 package main
 
 import (
+	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
 	"os"
 
+	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/database"
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/onebusaway"
 	"github.com/BrandonIrizarry/MTA_Tracker/internal/geturl"
 	"github.com/joho/godotenv"
+
+	_ "github.com/mattn/go-sqlite3"
 )
 
 const (
@@ -19,6 +24,10 @@ const (
 	// route, the last component of the URL becomes 'MTA
 	// NYCT_M11'.
 	stopsForRouteBaseURL = "https://bustime.mta.info/api/where/stops-for-route/MTA NYCT_%s.json"
+
+	// tableDBName is the name of the SQLite table where the
+	// id-name associations will be stored and queried from.
+	tableDBName = "./cmd/stoptable/stops.db"
 )
 
 func main() {
@@ -51,5 +60,20 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(data)
+	db, err := sql.Open("sqlite3", tableDBName)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, stop := range data.Data.References.Stops {
+		fmt.Println(stop.Code, stop.Name)
+	}
+
+	dbQueries := database.New(db)
+
+	dbQueries.CreateStop(context.Background(), database.CreateStopParams{
+		ID:   123,
+		Name: "foo",
+	})
 }
