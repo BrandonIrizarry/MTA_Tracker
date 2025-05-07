@@ -45,10 +45,10 @@ func main() {
 		log.Fatal(err)
 	}
 
-	fmt.Println(jsonDump)
+	fmt.Println(string(jsonDump))
 }
 
-func callURL(url url.URL) (string, error) {
+func callURL(url url.URL) ([]byte, error) {
 	client := &http.Client{
 		Timeout: 5 * time.Second,
 	}
@@ -56,13 +56,13 @@ func callURL(url url.URL) (string, error) {
 	req, err := http.NewRequest("GET", url.String(), nil)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	res, err := client.Do(req)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
 	defer res.Body.Close()
@@ -70,10 +70,10 @@ func callURL(url url.URL) (string, error) {
 	body, err := io.ReadAll(res.Body)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return string(body), nil
+	return body, nil
 }
 
 func initStopMonitoringURL(apiKey string) (*url.URL, error) {
