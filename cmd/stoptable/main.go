@@ -60,6 +60,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	if code := data.Code; code != 200 {
+		log.Fatalf("OBA response reported '%d' response code, aborting", code)
+	}
+
 	db, err := sql.Open("sqlite3", tableDBName)
 
 	if err != nil {
