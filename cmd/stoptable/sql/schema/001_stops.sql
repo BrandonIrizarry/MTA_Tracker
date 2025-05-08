@@ -1,7 +1,7 @@
 -- +goose Up
 CREATE TABLE stops(
        id TEXT PRIMARY KEY,
-       name TEXT UNIQUE NOT NULL
+       name TEXT NOT NULL
 );
 
 -- +goose Down
