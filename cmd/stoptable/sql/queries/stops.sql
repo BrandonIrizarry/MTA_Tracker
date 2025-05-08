@@ -4,3 +4,6 @@ INSERT INTO stops (
 ) VALUES (
   ?, ?
 );
+
+-- name: ClearAllStops :exec
+DELETE FROM stops;

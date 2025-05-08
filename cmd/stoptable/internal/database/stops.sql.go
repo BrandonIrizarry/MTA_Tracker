@@ -9,6 +9,15 @@ import (
 	"context"
 )
 
+const clearAllStops = `-- name: ClearAllStops :exec
+DELETE FROM stops
+`
+
+func (q *Queries) ClearAllStops(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, clearAllStops)
+	return err
+}
+
 const createStop = `-- name: CreateStop :exec
 INSERT INTO stops (
   id, name
