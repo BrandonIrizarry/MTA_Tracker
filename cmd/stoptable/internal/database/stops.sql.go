@@ -9,14 +9,12 @@ import (
 	"context"
 )
 
-const createStop = `-- name: CreateStop :one
+const createStop = `-- name: CreateStop :exec
 INSERT INTO stops (
   id, name
 ) VALUES (
   ?, ?
 )
-
-RETURNING id, name
 `
 
 type CreateStopParams struct {
@@ -24,9 +22,7 @@ type CreateStopParams struct {
 	Name string
 }
 
-func (q *Queries) CreateStop(ctx context.Context, arg CreateStopParams) (Stop, error) {
-	row := q.db.QueryRowContext(ctx, createStop, arg.ID, arg.Name)
-	var i Stop
-	err := row.Scan(&i.ID, &i.Name)
-	return i, err
+func (q *Queries) CreateStop(ctx context.Context, arg CreateStopParams) error {
+	_, err := q.db.ExecContext(ctx, createStop, arg.ID, arg.Name)
+	return err
 }
