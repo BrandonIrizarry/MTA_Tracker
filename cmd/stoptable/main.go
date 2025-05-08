@@ -73,11 +73,4 @@ func main() {
 	for _, stop := range data.Data.References.Stops {
 		fmt.Println(stop.Code, stop.Name)
 	}
-
-	dbQueries := database.New(db)
-
-	dbQueries.CreateStop(context.Background(), database.CreateStopParams{
-		ID:   123,
-		Name: "foo",
-	})
 }
