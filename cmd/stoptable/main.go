@@ -73,6 +73,12 @@ func main() {
 
 	dbQueries := database.New(db)
 
+	// Before compiling the table inside the database, we should
+	// clear anything in it first. In the course of debugging and
+	// testing, we will be compiling the table afresh many, many
+	// times.
+	dbQueries.ClearAllStops(context.Background())
+
 	for _, stop := range data.Data.References.Stops {
 		stopParams := database.CreateStopParams{
 			ID:   stop.ID,
