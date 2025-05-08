@@ -64,6 +64,7 @@ func main() {
 		log.Fatalf("OBA response reported '%d' response code, aborting", code)
 	}
 
+	// Start handling database-editing logic here.
 	db, err := sql.Open("sqlite3", tableDBName)
 
 	if err != nil {
