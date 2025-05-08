@@ -27,7 +27,7 @@ const (
 
 	// tableDBName is the name of the SQLite table where the
 	// id-name associations will be stored and queried from.
-	tableDBName = "./cmd/stoptable/stops.db"
+	tableDBName = "./cmd/stoptable/stoptable.db"
 )
 
 func main() {
