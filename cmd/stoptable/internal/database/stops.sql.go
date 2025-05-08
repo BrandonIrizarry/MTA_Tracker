@@ -20,7 +20,7 @@ RETURNING id, name
 `
 
 type CreateStopParams struct {
-	ID   int64
+	ID   string
 	Name string
 }
 

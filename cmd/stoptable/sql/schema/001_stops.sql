@@ -1,6 +1,6 @@
 -- +goose Up
 CREATE TABLE stops(
-       id INT PRIMARY KEY,
+       id TEXT PRIMARY KEY,
        name TEXT UNIQUE NOT NULL
 );
 
