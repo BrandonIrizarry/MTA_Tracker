@@ -1,6 +1,6 @@
 *~
 *.org
-/.env
+.env*
 /MTA_Tracker
 /stopmonitortest
 /stoptable
