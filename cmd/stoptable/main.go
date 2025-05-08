@@ -70,7 +70,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	dbQueries := database.New(db)
+
 	for _, stop := range data.Data.References.Stops {
-		fmt.Println(stop.Code, stop.Name)
+		stopParams := database.CreateStopParams{
+			ID:   stop.ID,
+			Name: stop.Name,
+		}
+
+		if err := dbQueries.CreateStop(context.Background(), stopParams); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
