@@ -15,4 +15,20 @@ GET https://bustime.mta.info/api/siri/stop-monitoring.json?key=914cb520-4cb4-4f2
 # track. If the user deletes the stop, then after a certain amount of
 # time, this saved info could get pruned from the database.
 
-GET https://bustime.mta.info/api/where/stops-for-route/MTA%20NYCT_M11.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&includePolylines=false&version=2
+GET https://bustime.mta.info/api/where/stops-for-route/MTA%20NYCT_M12.json?key=914cb520-4cb4-4f21-869c-d3d33e0953ae&includePolylines=false&version=2
+
+# Trains.
+GET https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-ace
+
+# Transiter example (for a stop.)
+GET https://demo.transiter.dev/systems/us-ny-subway/stops/D15
+
+# Transiter example (for a route.)
+# This endpoint gives me the stops for all trains.
+# It looks like we'd be using the 'realtime' set of stops.
+GET https://demo.transiter.dev/systems/us-ny-subway/routes/A
+
+# Raw Transiter.
+#
+# We could use this to effectively crawl the site, if needed.
+GET https://demo.transiter.dev
