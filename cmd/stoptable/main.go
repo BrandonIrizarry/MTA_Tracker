@@ -23,11 +23,15 @@ const (
 	// configurable. For example, if the user queries the M11
 	// route, the last component of the URL becomes 'MTA
 	// NYCT_M11'.
-	stopsForRouteBaseURL = "https://bustime.mta.info/api/where/stops-for-route/MTA NYCT_%s.json"
+	stopsForRouteBaseURL = "https://bustime.mta.info/api/where/stops-for-route/%s.json"
 
 	// tableDBName is the name of the SQLite table where the
 	// id-name associations will be stored and queried from.
 	tableDBName = "./cmd/stoptable/stoptable.db"
+
+	// For the moment, this is hardcoded. Later, I'll make this
+	// configurable via a command-line flag.
+	routeID = "MTA NYCT_M11"
 )
 
 func main() {
@@ -45,7 +49,7 @@ func main() {
 		"includePolylines": "false",
 	}
 
-	stopsForRouteBaseURLFilled := fmt.Sprintf(stopsForRouteBaseURL, "M11")
+	stopsForRouteBaseURLFilled := fmt.Sprintf(stopsForRouteBaseURL, routeID)
 
 	responseBytes, err := geturl.Call(stopsForRouteBaseURLFilled, queries)
 
@@ -81,8 +85,9 @@ func main() {
 
 	for _, stop := range data.Data.References.Stops {
 		stopParams := database.CreateStopParams{
-			ID:   stop.ID,
-			Name: stop.Name,
+			ID:      stop.ID,
+			Name:    stop.Name,
+			RouteID: routeID,
 		}
 
 		if err := dbQueries.CreateStop(context.Background(), stopParams); err != nil {

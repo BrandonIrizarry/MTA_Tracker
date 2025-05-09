@@ -20,18 +20,19 @@ func (q *Queries) ClearAllStops(ctx context.Context) error {
 
 const createStop = `-- name: CreateStop :exec
 INSERT INTO stops (
-  id, name
+  id, name, route_id
 ) VALUES (
-  ?, ?
+  ?, ?, ?
 )
 `
 
 type CreateStopParams struct {
-	ID   string
-	Name string
+	ID      string
+	Name    string
+	RouteID string
 }
 
 func (q *Queries) CreateStop(ctx context.Context, arg CreateStopParams) error {
-	_, err := q.db.ExecContext(ctx, createStop, arg.ID, arg.Name)
+	_, err := q.db.ExecContext(ctx, createStop, arg.ID, arg.Name, arg.RouteID)
 	return err
 }

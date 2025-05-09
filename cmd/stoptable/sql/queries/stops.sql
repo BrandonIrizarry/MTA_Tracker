@@ -1,8 +1,8 @@
 -- name: CreateStop :exec
 INSERT INTO stops (
-  id, name
+  id, name, route_id
 ) VALUES (
-  ?, ?
+  ?, ?, ?
 );
 
 -- name: ClearAllStops :exec

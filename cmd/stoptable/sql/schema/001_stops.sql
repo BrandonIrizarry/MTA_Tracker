@@ -1,7 +1,8 @@
 -- +goose Up
 CREATE TABLE stops(
        id TEXT PRIMARY KEY,
-       name TEXT NOT NULL
+       name TEXT NOT NULL,
+       route_id TEXT NOT NULL
 );
 
 -- +goose Down

@@ -5,6 +5,7 @@
 package database
 
 type Stop struct {
-	ID   string
-	Name string
+	ID      string
+	Name    string
+	RouteID string
 }
