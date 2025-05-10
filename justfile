@@ -13,6 +13,6 @@ view-db cmd:
 sqlc-gen cmd:
 	sqlc -f cmd/{{cmd}}/sqlc.yaml generate
 
-reset-db cmd:
+reset-db cmd: && (sqlc-gen cmd)
 	rm -rf cmd/{{cmd}}/{{cmd}}.db
 	goose -dir cmd/{{cmd}}/sql/schema sqlite3 cmd/{{cmd}}/{{cmd}}.db up
