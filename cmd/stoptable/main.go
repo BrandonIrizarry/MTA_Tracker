@@ -85,7 +85,7 @@ func addRoute(cfg config, routeID string) error {
 	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
 
 	if routeExists == "1" {
-		return fmt.Errorf("Duplicate route '%s'", routeID)
+		return fmt.Errorf("Route '%s' exists", routeID)
 	}
 
 	stopsForRouteBaseURLFilled := fmt.Sprintf(stopsForRouteBaseURL, routeID)
