@@ -74,6 +74,10 @@ func main() {
 		log.Fatal(err)
 	}
 
+	for _, route := range newRoutes {
+		fmt.Println(route)
+	}
+
 	err = addRoute(cfg, "MTA NYCT_M11")
 
 	if err != nil {
