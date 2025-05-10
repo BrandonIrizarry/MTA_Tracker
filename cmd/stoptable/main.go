@@ -123,7 +123,8 @@ func addRoute(cfg config, routeID string) error {
 		}
 
 		if err := cfg.dbQueries.CreateStop(context.Background(), stopParams); err != nil {
-			log.Fatal(err)
+			log.Print("Database error")
+			return err
 		}
 	}
 
