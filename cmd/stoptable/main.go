@@ -82,6 +82,12 @@ func main() {
 }
 
 func addRoute(cfg config, routeID string) error {
+	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
+
+	if routeExists == "1" {
+		return fmt.Errorf("Duplicate route '%s'", routeID)
+	}
+
 	stopsForRouteBaseURLFilled := fmt.Sprintf(stopsForRouteBaseURL, routeID)
 
 	responseBytes, err := geturl.Call(stopsForRouteBaseURLFilled, map[string]string{
