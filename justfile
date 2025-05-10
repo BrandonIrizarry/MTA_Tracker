@@ -4,8 +4,8 @@ build-all:
 build cmd:
 	go build -o {{cmd}} cmd/{{cmd}}/main.go
 
-run cmd: (build cmd)
-	./{{cmd}}
+run cmd *FLAGS: (build cmd)
+	./{{cmd}} {{FLAGS}}
 
 view-db cmd:
 	sqlite3 cmd/{{cmd}}/{{cmd}}.db
