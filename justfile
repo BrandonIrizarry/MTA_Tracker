@@ -11,7 +11,7 @@ view-db cmd:
 	sqlite3 cmd/{{cmd}}/{{cmd}}.db
 
 sqlc-gen cmd:
-	sqlc -f cmd/{{cmd}}/sqlc.yaml
+	sqlc -f cmd/{{cmd}}/sqlc.yaml generate
 
 reset-db cmd:
 	rm -rf cmd/{{cmd}}/{{cmd}}.db
