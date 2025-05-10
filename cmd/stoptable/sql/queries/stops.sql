@@ -7,3 +7,9 @@ INSERT INTO stops (
 
 -- name: ClearAllStops :exec
 DELETE FROM stops;
+
+-- name: TestRouteExists :one
+SELECT EXISTS (
+       SELECT route_id FROM stops
+       WHERE route_id = ?
+);

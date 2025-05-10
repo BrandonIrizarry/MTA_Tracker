@@ -36,3 +36,17 @@ func (q *Queries) CreateStop(ctx context.Context, arg CreateStopParams) error {
 	_, err := q.db.ExecContext(ctx, createStop, arg.ID, arg.Name, arg.RouteID)
 	return err
 }
+
+const testRouteExists = `-- name: TestRouteExists :one
+SELECT EXISTS (
+       SELECT route_id FROM stops
+       WHERE route_id = ?
+)
+`
+
+func (q *Queries) TestRouteExists(ctx context.Context, routeID string) (string, error) {
+	row := q.db.QueryRowContext(ctx, testRouteExists, routeID)
+	var route_id string
+	err := row.Scan(&route_id)
+	return route_id, err
+}
