@@ -90,8 +90,16 @@ func main() {
 		log.Fatal(err)
 	}
 
+	// For sanity's sake, check against reusing the same routes
+	// for both an add and a remove operation, for example:
+	//
+	// --add=M11 --remove=M11
+	duplicateRoutes := make(map[string]bool)
+
 	for _, shortRoute := range newRoutes {
 		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
+		duplicateRoutes[route] = true // Record that we saw this route.
+
 		err := addRoute(cfg, route)
 
 		if err != nil {
@@ -105,6 +113,11 @@ func main() {
 
 	for _, shortRoute := range obsoleteRoutes {
 		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
+
+		if duplicateRoutes[route] {
+			log.Fatalf("Ambiguous reuse of route id: %s", route)
+		}
+
 		err := removeRoute(cfg, route)
 
 		if err != nil {
