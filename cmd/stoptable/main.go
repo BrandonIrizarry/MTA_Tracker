@@ -72,6 +72,14 @@ func (r RouteExistsError) Error() string {
 	return fmt.Sprintf("Route '%s' exists", r.routeID)
 }
 
+type RouteDoesNotExistError struct {
+	routeID string
+}
+
+func (r RouteDoesNotExistError) Error() string {
+	return fmt.Sprintf("Route '%s' doesn't exist", r.routeID)
+}
+
 func main() {
 	// See which routes we're adding and/or removing.
 	pflag.Parse()
@@ -89,6 +97,19 @@ func main() {
 		if err != nil {
 			if errRouteExists, ok := err.(*RouteExistsError); ok {
 				log.Printf("%v; skipping", errRouteExists)
+			} else {
+				log.Fatal(err)
+			}
+		}
+	}
+
+	for _, shortRoute := range obsoleteRoutes {
+		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
+		err := removeRoute(cfg, route)
+
+		if err != nil {
+			if errRouteDoesNotExist, ok := err.(*RouteDoesNotExistError); ok {
+				log.Printf("%v; skipping", errRouteDoesNotExist)
 			} else {
 				log.Fatal(err)
 			}
@@ -141,6 +162,25 @@ func addRoute(cfg config, routeID string) error {
 			log.Print("Database error")
 			return err
 		}
+	}
+
+	return nil
+}
+
+func removeRoute(cfg config, routeID string) error {
+	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
+
+	if err != nil {
+		return err
+	}
+
+	if routeExists == "0" {
+		return &RouteDoesNotExistError{routeID: routeID}
+	}
+
+	if err := cfg.dbQueries.ClearStopsByRoute(context.Background(), routeID); err != nil {
+		log.Print("Database error")
+		return err
 	}
 
 	return nil
