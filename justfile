@@ -2,10 +2,10 @@ build-all:
 	go build -o stopmonitortest cmd/stopmonitortest/main.go
 
 build cmd:
-	go build -o {{cmd}} cmd/{{cmd}}/main.go
+	go build -C cmd/{{cmd}}/ -o {{cmd}}.out
 
 run cmd *FLAGS: (build cmd)
-	./{{cmd}} {{FLAGS}}
+	cmd/{{cmd}}/{{cmd}}.out {{FLAGS}}
 
 view-db cmd:
 	sqlite3 cmd/{{cmd}}/{{cmd}}.db

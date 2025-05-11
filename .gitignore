@@ -2,6 +2,5 @@
 *.org
 .env*
 /MTA_Tracker
-/stopmonitortest
-/stoptable
+*.out
 *.db
