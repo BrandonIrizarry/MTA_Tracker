@@ -87,6 +87,14 @@ func main() {
 	}
 }
 
+// addRoute adds stops for the given routeID to the database file. It
+// queries the appropriate endpoint to get this information.
+//
+// cfg is needed to perform database queries, such as the actual
+// data-inclusion operation.
+//
+// Attempting to add a route that's already been added to the database
+// is an error.
 func addRoute(cfg config, routeID string) error {
 	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
 
@@ -137,6 +145,12 @@ func addRoute(cfg config, routeID string) error {
 	return nil
 }
 
+// removeRoute removes the stops associated with the given routeID.
+//
+// Note that it doesn't need to make a network request.
+//
+// Attempting to remove a route that's no longer (or was never)
+// present in the database is an error.
 func removeRoute(cfg config, routeID string) error {
 	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
 
@@ -156,6 +170,11 @@ func removeRoute(cfg config, routeID string) error {
 	return nil
 }
 
+// initConfig encapsulates the code used to define the config struct's
+// various fields, such as the API key and database-query handle.
+//
+// The newly constructed config struct is returned, along with an
+// error.
 func initConfig() (config, error) {
 	apiKey := os.Getenv("API_KEY")
 
@@ -179,6 +198,10 @@ func initConfig() (config, error) {
 	return cfg, nil
 }
 
+// init handles any otherwise non-refactorable administrivia needed by
+// the application at large, such as loading both our .env file and
+// command-line flags (which are defined and configured in
+// 'routelist.go')
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	godotenv.Load(".env")
