@@ -82,14 +82,17 @@ func main() {
 		log.Fatal(err)
 	}
 
-	for _, route := range newRoutes {
-		fmt.Println(route)
-	}
+	for _, shortRoute := range newRoutes {
+		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
+		err := addRoute(cfg, route)
 
-	err = addRoute(cfg, "MTA NYCT_M11")
-
-	if err != nil {
-		log.Fatal(err)
+		if err != nil {
+			if errRouteExists, ok := err.(*RouteExistsError); ok {
+				log.Printf("%v; skipping", errRouteExists)
+			} else {
+				log.Fatal(err)
+			}
+		}
 	}
 }
 
