@@ -64,6 +64,14 @@ func (rlist *routeList) String() string {
 var newRoutes routeList
 var obsoleteRoutes routeList
 
+type RouteExistsError struct {
+	routeID string
+}
+
+func (r RouteExistsError) Error() string {
+	return fmt.Sprintf("Route '%s' exists", r.routeID)
+}
+
 func main() {
 	// See which routes we're adding and/or removing.
 	pflag.Parse()
@@ -89,7 +97,7 @@ func addRoute(cfg config, routeID string) error {
 	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
 
 	if routeExists == "1" {
-		return fmt.Errorf("Route '%s' exists", routeID)
+		return &RouteExistsError{routeID: routeID}
 	}
 
 	stopsForRouteBaseURLFilled := fmt.Sprintf(stopsForRouteBaseURL, routeID)
