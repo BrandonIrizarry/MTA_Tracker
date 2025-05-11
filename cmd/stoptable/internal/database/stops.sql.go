@@ -18,6 +18,16 @@ func (q *Queries) ClearAllStops(ctx context.Context) error {
 	return err
 }
 
+const clearStopsByRoute = `-- name: ClearStopsByRoute :exec
+DELETE FROM stops
+WHERE route_id = ?
+`
+
+func (q *Queries) ClearStopsByRoute(ctx context.Context, routeID string) error {
+	_, err := q.db.ExecContext(ctx, clearStopsByRoute, routeID)
+	return err
+}
+
 const createStop = `-- name: CreateStop :exec
 INSERT INTO stops (
   stop_id, name, route_id

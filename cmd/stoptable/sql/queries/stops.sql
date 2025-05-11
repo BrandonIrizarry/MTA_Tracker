@@ -13,3 +13,7 @@ SELECT EXISTS (
        SELECT route_id FROM stops
        WHERE route_id = ?
 );
+
+-- name: ClearStopsByRoute :exec
+DELETE FROM stops
+WHERE route_id = ?
