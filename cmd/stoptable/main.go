@@ -99,6 +99,10 @@ func main() {
 func addRoute(cfg config, routeID string) error {
 	routeExists, err := cfg.dbQueries.TestRouteExists(context.Background(), routeID)
 
+	if err != nil {
+		return err
+	}
+
 	if routeExists == "1" {
 		return &RouteExistsError{routeID: routeID}
 	}
