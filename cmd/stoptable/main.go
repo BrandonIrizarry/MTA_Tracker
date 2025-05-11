@@ -128,7 +128,7 @@ func addRoute(cfg config, routeID string) error {
 
 	for _, stop := range data.Data.References.Stops {
 		stopParams := database.CreateStopParams{
-			ID:      stop.ID,
+			StopID:  stop.ID,
 			Name:    stop.Name,
 			RouteID: routeID,
 		}

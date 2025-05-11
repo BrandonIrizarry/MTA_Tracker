@@ -1,6 +1,6 @@
 -- name: CreateStop :exec
 INSERT INTO stops (
-  id, name, route_id
+  stop_id, name, route_id
 ) VALUES (
   ?, ?, ?
 );
