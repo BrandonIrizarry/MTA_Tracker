@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/database"
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/onebusaway"
@@ -36,48 +35,6 @@ const (
 type config struct {
 	apiKey    string
 	dbQueries *database.Queries
-}
-
-type routeList []string
-
-func (rlist *routeList) Set(value string) error {
-	if len(*rlist) > 0 {
-		return errors.New("interval flag already set")
-	}
-
-	for _, route := range strings.Split(value, ",") {
-		*rlist = append(*rlist, route)
-	}
-
-	return nil
-}
-
-func (rlist *routeList) Type() string {
-	return "routeList"
-}
-
-func (rlist *routeList) String() string {
-	return fmt.Sprint(*rlist)
-}
-
-// Flags.
-var newRoutes routeList
-var obsoleteRoutes routeList
-
-type RouteExistsError struct {
-	routeID string
-}
-
-func (r RouteExistsError) Error() string {
-	return fmt.Sprintf("Route '%s' exists", r.routeID)
-}
-
-type RouteDoesNotExistError struct {
-	routeID string
-}
-
-func (r RouteDoesNotExistError) Error() string {
-	return fmt.Sprintf("Route '%s' doesn't exist", r.routeID)
 }
 
 func main() {
