@@ -15,6 +15,10 @@ type flagConfig struct {
 	obsoleteRoutes []string
 }
 
+// initFlags handles the required optparse initialization steps.
+//
+// The only thing missing here is an easy 'help' option,
+// unfortunately.
 func initFlags() (flagConfig, error) {
 	// See which routes we're adding and/or removing.
 	options := []optparse.Option{
@@ -41,12 +45,14 @@ func initFlags() (flagConfig, error) {
 		case "add":
 			fconfig.newRoutes = strings.Split(value.Optarg, ",")
 
+			// Record that we saw this flag.
 			for _, route := range fconfig.newRoutes {
 				seenFlags[route] = true
 			}
 		case "remove":
 			fconfig.obsoleteRoutes = strings.Split(value.Optarg, ",")
 
+			// Now check for any duplicated flags.
 			for _, route := range fconfig.obsoleteRoutes {
 				if seenFlags[route] {
 					return flagConfig{}, fmt.Errorf("Attempt to both add and remove route: %s", route)
