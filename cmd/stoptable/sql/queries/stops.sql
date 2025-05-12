@@ -16,4 +16,4 @@ SELECT EXISTS (
 
 -- name: ClearStopsByRoute :exec
 DELETE FROM stops
-WHERE route_id = ?
+WHERE route_id = ?;
