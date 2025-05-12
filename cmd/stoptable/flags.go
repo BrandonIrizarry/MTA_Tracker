@@ -2,6 +2,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -14,7 +15,7 @@ type flagConfig struct {
 	obsoleteRoutes []string
 }
 
-func initFlags() flagConfig {
+func initFlags() (flagConfig, error) {
 	// See which routes we're adding and/or removing.
 	options := []optparse.Option{
 		{Long: "add", Short: 'a', Kind: optparse.KindRequired},
@@ -31,14 +32,28 @@ func initFlags() flagConfig {
 		log.Fatal(optErr)
 	}
 
+	// Check for arguments that are duplicated across flags,
+	// e.g. -a M11 -r M11.
+	seenFlags := make(map[string]bool)
+
 	for _, value := range flagValues {
 		switch value.Long {
 		case "add":
 			fconfig.newRoutes = strings.Split(value.Optarg, ",")
+
+			for _, route := range fconfig.newRoutes {
+				seenFlags[route] = true
+			}
 		case "remove":
 			fconfig.obsoleteRoutes = strings.Split(value.Optarg, ",")
+
+			for _, route := range fconfig.obsoleteRoutes {
+				if seenFlags[route] {
+					return flagConfig{}, fmt.Errorf("Attempt to both add and remove route: %s", route)
+				}
+			}
 		}
 	}
 
-	return fconfig
+	return fconfig, nil
 }
