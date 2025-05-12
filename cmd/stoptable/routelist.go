@@ -29,7 +29,7 @@ func (rlist *routeList) Set(value string) error {
 }
 
 func (rlist *routeList) Type() string {
-	return "routeList"
+	return ""
 }
 
 func (rlist *routeList) String() string {

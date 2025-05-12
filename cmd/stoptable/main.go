@@ -214,6 +214,6 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	godotenv.Load(".env")
 
-	pflag.VarP(&newRoutes, "add", "a", "Add a route")
-	pflag.VarP(&obsoleteRoutes, "remove", "r", "Remove a route")
+	pflag.VarP(&newRoutes, "add", "a", "Add one or more routes as a comma-separated list")
+	pflag.VarP(&obsoleteRoutes, "remove", "r", "Remove one or more routes as a comma-separated list")
 }
