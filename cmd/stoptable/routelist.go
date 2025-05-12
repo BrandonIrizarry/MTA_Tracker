@@ -8,34 +8,34 @@
 // method - Type - not found in the flags package.
 package main
 
-import (
-	"errors"
-	"fmt"
-	"strings"
-)
+// import (
+// 	"errors"
+// 	"fmt"
+// 	"strings"
+// )
 
-type routeList []string
+// type routeList []string
 
-func (rlist *routeList) Set(value string) error {
-	if len(*rlist) > 0 {
-		return errors.New("interval flag already set")
-	}
+// func (rlist *routeList) Set(value string) error {
+// 	if len(*rlist) > 0 {
+// 		return errors.New("interval flag already set")
+// 	}
 
-	for _, route := range strings.Split(value, ",") {
-		*rlist = append(*rlist, route)
-	}
+// 	for _, route := range strings.Split(value, ",") {
+// 		*rlist = append(*rlist, route)
+// 	}
 
-	return nil
-}
+// 	return nil
+// }
 
-func (rlist *routeList) Type() string {
-	return ""
-}
+// func (rlist *routeList) Type() string {
+// 	return ""
+// }
 
-func (rlist *routeList) String() string {
-	return fmt.Sprint(*rlist)
-}
+// func (rlist *routeList) String() string {
+// 	return fmt.Sprint(*rlist)
+// }
 
 // Flags.
-var newRoutes routeList
-var obsoleteRoutes routeList
+//var newRoutes routeList
+//var obsoleteRoutes routeList

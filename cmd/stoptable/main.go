@@ -8,14 +8,15 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/database"
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/onebusaway"
 	"github.com/BrandonIrizarry/MTA_Tracker/internal/geturl"
 	"github.com/joho/godotenv"
-	"github.com/spf13/pflag"
 
 	_ "github.com/mattn/go-sqlite3"
+	"nullprogram.com/x/optparse"
 )
 
 const (
@@ -39,7 +40,30 @@ type config struct {
 
 func main() {
 	// See which routes we're adding and/or removing.
-	pflag.Parse()
+	options := []optparse.Option{
+		{Long: "add", Short: 'a', Kind: optparse.KindRequired},
+		{Long: "remove", Short: 'r', Kind: optparse.KindRequired},
+	}
+
+	var newRoutes []string
+	var obsoleteRoutes []string
+
+	flagValues, rest, optErr := optparse.Parse(options, os.Args)
+
+	if optErr != nil {
+		log.Fatal(optErr)
+	}
+
+	for _, value := range flagValues {
+		switch value.Long {
+		case "add":
+			newRoutes = strings.Split(value.Optarg, ",")
+		case "remove":
+			obsoleteRoutes = strings.Split(value.Optarg, ",")
+		}
+	}
+
+	fmt.Printf("rest: %s\n", rest)
 
 	cfg, err := initConfig()
 
@@ -214,6 +238,6 @@ func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	godotenv.Load(".env")
 
-	pflag.VarP(&newRoutes, "add", "a", "Add one or more routes as a comma-separated list")
-	pflag.VarP(&obsoleteRoutes, "remove", "r", "Remove one or more routes as a comma-separated list")
+	//pflag.VarP(&newRoutes, "add", "a", "Add one or more routes as a comma-separated list")
+	//pflag.VarP(&obsoleteRoutes, "remove", "r", "Remove one or more routes as a comma-separated list")
 }
