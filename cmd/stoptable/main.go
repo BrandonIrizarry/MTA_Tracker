@@ -142,6 +142,10 @@ func addRoute(cfg config, routeID string) error {
 		}
 	}
 
+	// Add this log message to confirm that the application did
+	// something.
+	log.Printf("Added route '%s'", routeID)
+
 	return nil
 }
 
@@ -166,6 +170,10 @@ func removeRoute(cfg config, routeID string) error {
 		log.Print("Database error")
 		return err
 	}
+
+	// Add this log message to confirm that the application did
+	// something.
+	log.Printf("Removed route '%s'", routeID)
 
 	return nil
 }
