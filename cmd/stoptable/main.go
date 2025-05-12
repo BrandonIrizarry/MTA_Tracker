@@ -74,6 +74,17 @@ func main() {
 			}
 		}
 	}
+
+	// Handle the query, if it exists.
+	if fconfig.query != "" {
+		results, err := cfg.dbQueries.QueryStopsBySubstring(context.Background(), fconfig.query)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(results)
+	}
 }
 
 // addRoute adds stops for the given routeID to the database file. It
