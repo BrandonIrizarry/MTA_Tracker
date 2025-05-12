@@ -17,3 +17,7 @@ SELECT EXISTS (
 -- name: ClearStopsByRoute :exec
 DELETE FROM stops
 WHERE route_id = ?;
+
+-- name: QueryStopsBySubstring :many
+SELECT stop_id FROM stops
+WHERE name LIKE format('%%%s%%', ?);

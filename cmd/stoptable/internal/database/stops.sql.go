@@ -47,6 +47,34 @@ func (q *Queries) CreateStop(ctx context.Context, arg CreateStopParams) error {
 	return err
 }
 
+const queryStopsBySubstring = `-- name: QueryStopsBySubstring :many
+SELECT stop_id FROM stops
+WHERE name LIKE format('%%%s%%', ?)
+`
+
+func (q *Queries) QueryStopsBySubstring(ctx context.Context, format interface{}) ([]string, error) {
+	rows, err := q.db.QueryContext(ctx, queryStopsBySubstring, format)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var items []string
+	for rows.Next() {
+		var stop_id string
+		if err := rows.Scan(&stop_id); err != nil {
+			return nil, err
+		}
+		items = append(items, stop_id)
+	}
+	if err := rows.Close(); err != nil {
+		return nil, err
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return items, nil
+}
+
 const testRouteExists = `-- name: TestRouteExists :one
 SELECT EXISTS (
        SELECT route_id FROM stops
