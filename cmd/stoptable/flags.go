@@ -13,6 +13,7 @@ import (
 type flagConfig struct {
 	newRoutes      []string
 	obsoleteRoutes []string
+	query          string
 }
 
 // initFlags handles the required optparse initialization steps.
@@ -28,9 +29,8 @@ func initFlags() (flagConfig, error) {
 
 	var fconfig flagConfig
 
-	// For now 'rest' is unused. I might use it to query the bus
-	// stop id.
-	flagValues, _, optErr := optparse.Parse(options, os.Args)
+	// 'rest' is used to query the bus stop id.
+	flagValues, rest, optErr := optparse.Parse(options, os.Args)
 
 	if optErr != nil {
 		log.Fatal(optErr)
@@ -59,6 +59,12 @@ func initFlags() (flagConfig, error) {
 				}
 			}
 		}
+	}
+
+	if len(rest) > 1 {
+		return flagConfig{}, fmt.Errorf("stoptable accepts only one query argument")
+	} else if len(rest) == 1 {
+		fconfig.query = rest[0]
 	}
 
 	return fconfig, nil
