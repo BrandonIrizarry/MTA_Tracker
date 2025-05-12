@@ -8,7 +8,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
 
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/database"
 	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stoptable/internal/onebusaway"
@@ -16,7 +15,6 @@ import (
 	"github.com/joho/godotenv"
 
 	_ "github.com/mattn/go-sqlite3"
-	"nullprogram.com/x/optparse"
 )
 
 const (
@@ -39,37 +37,13 @@ type config struct {
 }
 
 func main() {
-	// See which routes we're adding and/or removing.
-	options := []optparse.Option{
-		{Long: "add", Short: 'a', Kind: optparse.KindRequired},
-		{Long: "remove", Short: 'r', Kind: optparse.KindRequired},
-	}
-
-	var newRoutes []string
-	var obsoleteRoutes []string
-
-	flagValues, rest, optErr := optparse.Parse(options, os.Args)
-
-	if optErr != nil {
-		log.Fatal(optErr)
-	}
-
-	for _, value := range flagValues {
-		switch value.Long {
-		case "add":
-			newRoutes = strings.Split(value.Optarg, ",")
-		case "remove":
-			obsoleteRoutes = strings.Split(value.Optarg, ",")
-		}
-	}
-
-	fmt.Printf("rest: %s\n", rest)
-
 	cfg, err := initConfig()
 
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	fconfig := initFlags()
 
 	// For sanity's sake, check against reusing the same routes
 	// for both an add and a remove operation, for example:
@@ -77,7 +51,7 @@ func main() {
 	// --add=M11 --remove=M11
 	duplicateRoutes := make(map[string]bool)
 
-	for _, shortRoute := range newRoutes {
+	for _, shortRoute := range fconfig.newRoutes {
 		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
 		duplicateRoutes[route] = true // Record that we saw this route.
 
@@ -92,7 +66,7 @@ func main() {
 		}
 	}
 
-	for _, shortRoute := range obsoleteRoutes {
+	for _, shortRoute := range fconfig.obsoleteRoutes {
 		route := fmt.Sprintf("MTA NYCT_%s", shortRoute)
 
 		if duplicateRoutes[route] {
@@ -231,13 +205,8 @@ func initConfig() (config, error) {
 }
 
 // init handles any otherwise non-refactorable administrivia needed by
-// the application at large, such as loading both our .env file and
-// command-line flags (which are defined and configured in
-// 'routelist.go')
+// the application at large, such as loading '.env'.
 func init() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 	godotenv.Load(".env")
-
-	//pflag.VarP(&newRoutes, "add", "a", "Add one or more routes as a comma-separated list")
-	//pflag.VarP(&obsoleteRoutes, "remove", "r", "Remove one or more routes as a comma-separated list")
 }
