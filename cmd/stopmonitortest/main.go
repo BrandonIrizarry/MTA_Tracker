@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"os"
@@ -13,17 +14,19 @@ const (
 	stopMonitoringBaseURL = "https://bustime.mta.info/api/siri/stop-monitoring.json"
 )
 
+type config struct {
+	apiKey string
+}
+
 func main() {
-	godotenv.Load(".env")
+	cfg, initConfigErr := initConfig()
 
-	apiKey := os.Getenv("API_KEY")
-
-	if apiKey == "" {
-		log.Fatal("API_KEY environment variable not set")
+	if initConfigErr != nil {
+		log.Fatal(initConfigErr)
 	}
 
 	queries := map[string]string{
-		"key":           apiKey,
+		"key":           cfg.apiKey,
 		"version":       "2",
 		"MonitoringRef": "401386",
 	}
@@ -35,4 +38,22 @@ func main() {
 	}
 
 	fmt.Println(string(responseBytes))
+}
+
+func initConfig() (config, error) {
+	apiKey := os.Getenv("API_KEY")
+
+	if apiKey == "" {
+		return config{}, errors.New("API_KEY environment variable not set")
+	}
+
+	cfg := config{
+		apiKey: apiKey,
+	}
+
+	return cfg, nil
+}
+
+func init() {
+	godotenv.Load(".env")
 }
