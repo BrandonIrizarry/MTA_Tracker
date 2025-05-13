@@ -83,7 +83,9 @@ func main() {
 			log.Fatal(err)
 		}
 
-		fmt.Println(results)
+		for _, result := range results {
+			fmt.Println(result)
+		}
 	}
 }
 
