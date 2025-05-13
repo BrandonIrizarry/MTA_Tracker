@@ -25,7 +25,6 @@ func main() {
 	queries := map[string]string{
 		"key":           apiKey,
 		"version":       "2",
-		"LineRef":       "M11",
 		"MonitoringRef": "401386",
 	}
 
