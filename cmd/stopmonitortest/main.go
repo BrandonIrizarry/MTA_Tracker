@@ -1,11 +1,15 @@
 package main
 
 import (
+	"bufio"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
+	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stopmonitortest/internal/siribus"
 	"github.com/BrandonIrizarry/MTA_Tracker/internal/geturl"
 	"github.com/joho/godotenv"
 )
@@ -26,18 +30,53 @@ func main() {
 	}
 
 	queries := map[string]string{
-		"key":           cfg.apiKey,
-		"version":       "2",
-		"MonitoringRef": "401386",
+		"key":     cfg.apiKey,
+		"version": "2",
 	}
 
-	responseBytes, err := geturl.Call(stopMonitoringBaseURL, queries)
+	scanner := bufio.NewScanner(os.Stdin)
 
-	if err != nil {
-		log.Fatal(err)
+	for scanner.Scan() {
+		stopID := scanner.Text()
+		rawID, found := strings.CutPrefix(stopID, "MTA_")
+
+		if !found {
+			log.Fatal("MTA_ stop ID prefix missing")
+		}
+
+		// Add the crucial MonitoringRef value to the map of
+		// queries.
+		queries["MonitoringRef"] = rawID
+
+		responseBytes, callErr := geturl.Call(stopMonitoringBaseURL, queries)
+
+		if callErr != nil {
+			log.Fatal(callErr)
+		}
+
+		// Marshall the response bytes into a SiriBus struct.
+		var siriBusData siribus.SiriBus
+
+		if err := json.Unmarshal(responseBytes, &siriBusData); err != nil {
+			log.Fatal(err)
+		}
+
+		// Print this out for now, to see what it looks like
+		// when there's an error and when everything's OK.
+		fmt.Println(siriBusData.Siri.ServiceDelivery.StopMonitoringDelivery[0].ErrorCondition)
+
+		// FIXME: for now, only look at the first entry of
+		// StopMonitoringDelivery, until I figure out why this
+		// is an array of multiple values, and not simply a
+		// single value.
+		for _, stopVisit := range siriBusData.Siri.ServiceDelivery.StopMonitoringDelivery[0].MonitoredStopVisit {
+			lineRef := stopVisit.MonitoredVehicleJourney.LineRef
+			destName := stopVisit.MonitoredVehicleJourney.DestinationName[0] // FIXME: why array?
+			arrivalProximityText := stopVisit.MonitoredVehicleJourney.MonitoredCall.ArrivalProximityText
+
+			fmt.Printf("%s to %s: %s\n", lineRef, destName, arrivalProximityText)
+		}
 	}
-
-	fmt.Println(string(responseBytes))
 }
 
 // initConfig encapsulates the code used to define the config struct's
