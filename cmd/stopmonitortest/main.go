@@ -40,6 +40,11 @@ func main() {
 	fmt.Println(string(responseBytes))
 }
 
+// initConfig encapsulates the code used to define the config struct's
+// various fields, such as the API key.
+//
+// The newly constructed config struct is returned, along with an
+// error.
 func initConfig() (config, error) {
 	apiKey := os.Getenv("API_KEY")
 
@@ -54,6 +59,8 @@ func initConfig() (config, error) {
 	return cfg, nil
 }
 
+// init handles any otherwise non-refactorable administrivia needed by
+// the application at large, such as loading '.env'.
 func init() {
 	godotenv.Load(".env")
 }
