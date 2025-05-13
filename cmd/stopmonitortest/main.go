@@ -61,9 +61,14 @@ func main() {
 			log.Fatal(err)
 		}
 
-		// Print this out for now, to see what it looks like
-		// when there's an error and when everything's OK.
-		fmt.Println(siriBusData.Siri.ServiceDelivery.StopMonitoringDelivery[0].ErrorCondition)
+		errorConditionJSON := siriBusData.Siri.ServiceDelivery.StopMonitoringDelivery[0].ErrorCondition
+
+		// FIXME: the error message in the response itself
+		// repeats three times. Can we amend this from our
+		// end?
+		if desc := errorConditionJSON.Description; desc != "" {
+			log.Fatalf("Stop-monitoring API call failed: %s", desc)
+		}
 
 		// FIXME: for now, only look at the first entry of
 		// StopMonitoringDelivery, until I figure out why this
