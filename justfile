@@ -1,6 +1,3 @@
-build-all:
-	go build -o stopmonitortest cmd/stopmonitortest/main.go
-
 build cmd:
 	go build -C cmd/{{cmd}}/ -o {{cmd}}.out
 
