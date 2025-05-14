@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stopmonitortest/internal/siribus"
+	"github.com/BrandonIrizarry/MTA_Tracker/cmd/stopmonitor/internal/siribus"
 	"github.com/BrandonIrizarry/MTA_Tracker/internal/geturl"
 	"github.com/joho/godotenv"
 )
