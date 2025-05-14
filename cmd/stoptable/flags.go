@@ -1,4 +1,5 @@
-// flags.go: Unmarshal command line arguments.
+// flags.go: Unmarshal command line arguments given to the stoptable
+// program.
 package main
 
 import (
@@ -10,10 +11,14 @@ import (
 	"nullprogram.com/x/optparse"
 )
 
+// flagConfig holds the arguments passed from the command line,
+// including rest/trailing arguments.
 type flagConfig struct {
 	newRoutes      []string
 	obsoleteRoutes []string
-	query          string
+
+	// This is used to hold the trailing, i.e. non-flag arguments.
+	query string
 }
 
 // initFlags handles the required optparse initialization steps.
@@ -36,10 +41,13 @@ func initFlags() (flagConfig, error) {
 		log.Fatal(optErr)
 	}
 
-	// Check for arguments that are duplicated across flags,
-	// e.g. -a M11 -r M11.
+	// Define a map used for checking for arguments that are
+	// duplicated across flags and therefore result in an
+	// ambiguous command, e.g. -a M11 -r M11.
 	seenFlags := make(map[string]bool)
 
+	// Note that arguments to -a and -r are given as
+	// comma-delimited values, no spaces.
 	for _, value := range flagValues {
 		switch value.Long {
 		case "add":
@@ -61,6 +69,8 @@ func initFlags() (flagConfig, error) {
 		}
 	}
 
+	// For now, we accept only one query argument, though nothing
+	// yet prohibits this from changing in the future.
 	if len(rest) > 1 {
 		return flagConfig{}, fmt.Errorf("stoptable accepts only one query argument")
 	} else if len(rest) == 1 {
