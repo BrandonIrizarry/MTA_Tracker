@@ -6,4 +6,7 @@ require github.com/joho/godotenv v1.5.1
 
 require github.com/mattn/go-sqlite3 v1.14.28
 
-require github.com/BrandonIrizarry/goptparse v1.0.0 // indirect
+require (
+	github.com/BrandonIrizarry/goptparse v1.0.0 // indirect
+	github.com/BrandonIrizarry/goptparse/v2 v2.0.0 // indirect
+)

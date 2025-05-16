@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/BrandonIrizarry/goptparse"
+	goptparse "github.com/BrandonIrizarry/goptparse/v2"
 )
 
 // flagConfig holds the arguments passed from the command line,
