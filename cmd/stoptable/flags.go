@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"nullprogram.com/x/optparse"
+	"github.com/BrandonIrizarry/goptparse"
 )
 
 // flagConfig holds the arguments passed from the command line,
@@ -27,15 +27,26 @@ type flagConfig struct {
 // unfortunately.
 func initFlags() (flagConfig, error) {
 	// See which routes we're adding and/or removing.
-	options := []optparse.Option{
-		{Long: "add", Short: 'a', Kind: optparse.KindRequired},
-		{Long: "remove", Short: 'r', Kind: optparse.KindRequired},
+	options := []goptparse.Option{
+		{
+			Long:  "add",
+			Short: 'a',
+			Kind:  goptparse.KindRequired,
+			Help:  "Use a comma-separated list, no spaces, to add bus routes to the database.",
+		},
+
+		{
+			Long:  "remove",
+			Short: 'r',
+			Kind:  goptparse.KindRequired,
+			Help:  "Use a comma-separated list, no spaces, to remove bus routes from the database.",
+		},
 	}
 
 	var fconfig flagConfig
 
 	// 'rest' is used to query the bus stop id.
-	flagValues, rest, optErr := optparse.Parse(options, os.Args)
+	flagValues, rest, optErr := goptparse.Parse(options, os.Args)
 
 	if optErr != nil {
 		log.Fatal(optErr)
