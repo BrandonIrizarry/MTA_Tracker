@@ -32,14 +32,16 @@ func initFlags() (flagConfig, error) {
 			Long:  "add",
 			Short: 'a',
 			Kind:  goptparse.KindRequired,
-			Help:  "Use a comma-separated list, no spaces, to add bus routes to the database.",
+			Help: `Use a comma-separated list, no spaces, to add bus routes to the database.
+                               For example: -a M11,M12`,
 		},
 
 		{
 			Long:  "remove",
 			Short: 'r',
 			Kind:  goptparse.KindRequired,
-			Help:  "Use a comma-separated list, no spaces, to remove bus routes from the database.",
+			Help: `Use a comma-separated list, no spaces, to remove bus routes from the database.
+                               For example: -r M11,M12`,
 		},
 	}
 
