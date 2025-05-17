@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -29,7 +30,29 @@ func main() {
 		log.Fatal(initConfigErr)
 	}
 
-	scanner := bufio.NewScanner(os.Stdin)
+	fconfig, initFlagsErr := initFlags()
+
+	if initFlagsErr != nil {
+		log.Fatal(initFlagsErr)
+	}
+
+	var reader io.Reader
+
+	if filename := fconfig.filename; filename != "" {
+		file, openErr := os.Open(filename)
+
+		if openErr != nil {
+			log.Fatal(openErr)
+		}
+
+		defer file.Close()
+
+		reader = file
+	} else {
+		reader = os.Stdin
+	}
+
+	scanner := bufio.NewScanner(reader)
 
 	for scanner.Scan() {
 		stopID := scanner.Text()
