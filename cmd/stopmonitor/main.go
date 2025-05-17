@@ -29,11 +29,6 @@ func main() {
 		log.Fatal(initConfigErr)
 	}
 
-	queries := map[string]string{
-		"key":     cfg.apiKey,
-		"version": "2",
-	}
-
 	scanner := bufio.NewScanner(os.Stdin)
 
 	for scanner.Scan() {
@@ -44,11 +39,11 @@ func main() {
 			log.Fatal("MTA_ stop ID prefix missing")
 		}
 
-		// Add the crucial MonitoringRef value to the map of
-		// queries.
-		queries["MonitoringRef"] = rawID
-
-		responseBytes, callErr := geturl.Call(stopMonitoringBaseURL, queries)
+		responseBytes, callErr := geturl.Call(stopMonitoringBaseURL, map[string]string{
+			"key":           cfg.apiKey,
+			"version":       "2",
+			"MonitoringRef": rawID,
+		})
 
 		if callErr != nil {
 			log.Fatal(callErr)
