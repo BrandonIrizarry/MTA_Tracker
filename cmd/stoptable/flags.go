@@ -11,8 +11,7 @@ import (
 	goptparse "github.com/BrandonIrizarry/goptparse/v2"
 )
 
-// flagConfig holds the arguments passed from the command line,
-// including rest/trailing arguments.
+// flagConfig holds the arguments passed from the command line.
 type flagConfig struct {
 	newRoutes      []string
 	obsoleteRoutes []string
@@ -21,10 +20,7 @@ type flagConfig struct {
 	query string
 }
 
-// initFlags handles the required optparse initialization steps.
-//
-// The only thing missing here is an easy 'help' option,
-// unfortunately.
+// initFlags handles the required goptparse initialization steps.
 func initFlags() (flagConfig, error) {
 	// See which routes we're adding and/or removing.
 	options := []goptparse.Option{
