@@ -17,7 +17,7 @@ type flagConfig struct {
 	newRoutes      []string
 	obsoleteRoutes []string
 
-	// This is used to hold the trailing, i.e. non-flag arguments.
+	// This is derived from the command-line trailing arguments.
 	query string
 }
 
